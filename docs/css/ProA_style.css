@@ -11,7 +11,7 @@ main {
 
 /* class属性で設定した領域で背景を青系（#99e0ff）にする */
 .bg-lightblue{
-	background: #99e0ff;
+	background: #36c3ff;
 }
 
 .border-dashed{
