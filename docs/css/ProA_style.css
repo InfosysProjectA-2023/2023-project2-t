@@ -29,7 +29,15 @@ main {
 }
 
 .font-size0{
-	font-size: smaller;
+	font-size: small;
+}
+
+.font-size1{
+	font-size: medium;
+}
+
+.font-size2{
+	font-size: large;
 }
 /* 地図の表示領域の設定 */
 #map_here{
