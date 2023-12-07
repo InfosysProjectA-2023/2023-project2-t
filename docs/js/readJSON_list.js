@@ -1,6 +1,10 @@
-// Description: JSONデータを読み込んで，list_example.htmlの<div id="main_content">～</div>間に繰り返し要素を生成する
+window.onload = function onLoad() {
+	const loadingMessage = document.getElementById('loading'); // "loading"要素を取得
+    if (loadingMessage) {
+        loadingMessage.style.display = 'none'; // ロードが完了したら非表示にする
+    }
 
-	//呼び出された際のURLパラメータの解析（.../detail.html?id=1などのとき，変数名idの値(1)を取り出す）
+	//呼び出された際のURLパラメータの解析（.../detail1.html?id=1などのとき，変数名idの値(1)を取り出す）※テンプレートの時点では使っていない
 	const urlParam = function(name){
 		let results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 		if(results != null){
@@ -11,61 +15,149 @@
 		}
 	};
 
-	const detail_html = "detail_example.html"; //個別詳細形式のページのHTMLファイル
-
-	const json_url = "https://athena.abe-lab.jp/~hidenao/ProA_2023/Project2_example/data.json";
+	const json_url = "https://infosysprojecta-2023.github.io/2023-project1-t.github.io//data.json";
 	// data.jsonでの動作が確認できたら，↑の行をコメント（//を先頭に付ける）して，↓の行のコメント//を外す
-	//const json_url = "https://infosysprojecta-2023.github.io/2023-project2-各チームの記号(A～T)/data.json";
+	//const json_url = "https://infosysprojecta-2023/project1-2023-グループ記号/data.json";
 
-	let q = urlParam('q'); //?q=検索語で指定されたとき
-	q = decodeURI(q); //URLエンコードされた文字列をスクリプトのコードによる文字列に戻す
-	let category = urlParam('category'); //?category=カテゴリ名で指定されたとき
-	category = decodeURI(category); //URLエンコードされた文字列をスクリプトのコードによる文字列に戻す
-	//qやcategoryなどでの検索する場合は，以下の表示HTML作成の処理にif文を追加する
-	//[カテゴリごとのページや検索の実行を行うページを実現するためには，list_example.htmlとreadJSON_list.jsをペアで複製する]
+	var id = 0;
+	let obj_id = document.getElementById("obj_id"); //紹介対象idを表す<input type="hidden" id="obj_id" value="0">があったら
+	if(obj_id != null){
+		id =obj_id.value; //obj_idの値を取得
+	}
+	if(id == 0){
+		id = urlParam('id'); //?id=Nで指定されたとき
+	}
 
-	const list_container_row = document.getElementById("list_container_row"); //id="list_container_row"の<div>タグを取得
-	//urlにfetchAPIでアクセスして，JSONデータを取得
-	const fetch_json = async (url) => {
+	const fetch_json = async (url) => {//urlの文字列のURLからidまたはqで指定した値を持つJSONオブジェクトを取得
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
-			return data;
+			const obj = data.introduction_obj_list[id]; //対象の１つ（一行）をオブジェクトとしてJSONから取り出す
+
+			if(obj === undefined){
+				alert('idの値は'+json_url+'のJSONデータ内にあるidの値としてください．');
+				return false;
+			}
+
+			const main = document.getElementsByTagName("main"); //mainタグを取得
+
+			if(main.length > 0){ //<main>～</main>があったら
+				let head_title = document.getElementsByTagName("title"); //titleタグを取得
+				head_title.item(0).innerText = obj.title; //<head><title>～</title></head>の間の～のところ（文字列）を変更
+				let top_title = document.getElementById("top-title");
+				top_title.innerText = obj.title; //ページの一番上の見出しの<div id="top-title">ところ（文字列）を変更
+				let top_abstract = document.getElementById("top-abstract");
+				top_abstract.innerText = obj.abstract; //ページの一番上の見出しの<div id="top-abstract">ところ（文字列）を変更
+				let page_headline = document.getElementsByTagName("h2");
+				if(page_headline.length > 0){ //<h2>のタグがあったら(すべてのh2タグが変更されるので，必要に応じてidで区別する)
+					page_headline.item(0).innerText = obj.title;
+				}
+
+				//<img id="thumnail_img">タグのsrcの値をサムネイル画像のファイルに設定（photosフォルダに”画像名_thum.jpg”がある必要がある）
+				let thumnail_img = document.getElementById("thumnail_img");
+				if(thumnail_img != null){
+					thumnail_img.setAttribute("src","./photos/"+obj.image_file+".jpg");
+				}
+
+				let abstract_text = document.getElementById("abstract");
+				if(abstract_text != null){ //<p id="abstract"></p>のタグがあったら
+					abstract_text.innerText = obj.abstract; //abstract（DBではカラム）の値に内容のテキストを変更
+				}
+
+				let detail_text = document.getElementById("detail");
+				if(detail_text != null){//<p id="detail"></p>のタグがあったら
+					detail_text.innerHTML = obj.detail; //detail（DBではカラム）の値に内容のHTMLを変更
+				}
+
+				let img_list = document.getElementById("image_list");
+				if(img_list){//<div id="image_list">のタグがあったら
+					image_list.innerHTML = ""; //id=image_listのタグの中のHTMLを空にする
+
+					//各画像ファイルを「追加の画像」としてlightbox2のリストとして<img>タグを追加していく
+					if(obj.image_file1 != null && obj.image_file1!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file1+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file1+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+
+					if(obj.image_file2 != null && obj.image_file2!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file2+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file2+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+
+					if(obj.image_file3 != null && obj.image_file3!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file3+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file3+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file4 != null && obj.image_file4!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file4+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file4+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file5 != null && obj.image_file5!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file5+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file5+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file6 != null && obj.image_file6!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file6+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file6+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file7 != null && obj.image_file7!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file7+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file7+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file8 != null && obj.image_file8!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file8+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file8+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file9 != null && obj.image_file9!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file9+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file9+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+					if(obj.image_file10 != null && obj.image_file10!=""){
+						image_list.innerHTML += '<a href="./photos/'+obj.image_file10+'.jpg" data-lightbox="image-list">';
+						image_list.innerHTML += '<img src="./photos/'+obj.image_file10+'.jpg" class="col-3 mb-5 box-shadow"/></a>';
+					}
+				 }
+
+				let star_ratings = document.getElementsByClassName("star-rating");
+
+				if(star_ratings.length > 0){//<div class="star-rating">のタグがあったら，scoreの値によって黄色い☆の表示幅を変更する
+					for(let i=0; i< star_ratings.length; i++){ //個別詳細のページでは1つだけだが，一覧ページでは複数もあり得る（要obj_idの値との一致をチェック）
+						let star_rating = star_ratings.item(i);
+						if(obj.score != null){
+							const style = window.getComputedStyle(star_rating); //style属性の値を取得
+							const font_size_str = style.getPropertyValue('font-size'); //font-sizeの値を取得
+							const font_size = font_size_str.match(/\d+/)[0]; //○○pxの○○（数字の部分を抜き出す）
+							const width = (obj.score / 5.0) *font_size*5; //px値にする(5は満点)
+							let star_rating_front = star_rating.getElementsByClassName("star-rating-front");
+							star_rating_front.item(0).style.width = width+"px"; //scoreの値をstar-rating-frontのstyle="width: ○○%"の値とする
+						}
+					}
+				}
+				let map_here = document.getElementById("map_here");
+				if(map_here != null){//<div id="map_here">のタグがあったら
+					//leaflet.jsを使ってOpen Street Mapを表示する
+					// 地図のデフォルトの緯度経度(35.369744, 139.415493)と拡大率(拡大レベル16)
+					let map = L.map('map_here').setView([obj.lat, obj.lng], 16);//map_hereはidの値
+
+					// 描画する(Copyrightは消してはならない)
+					L.tileLayer(
+						'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+						{ attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }
+					).addTo(map);
+
+					//マーカーを地図に追加する
+					L.marker([obj.lat, obj.lng]).addTo(map);
+				}
+			} //if(main != null)の終わり
+			else{
+				alert('<main>のタグは消さないでください．');
+			}
 		}
-		else{
-			alert("エラー：" + response.status+"\n以下のURLにアクセスできませんでした．"+url);
+		else{ //urlにアクセスできなかった時のエラー処理
+			alert("エラー：" + "以下のURLにアクセスできませんでした．"+url);
 		}
-	}
+	}; //const fetch_json = async (url) => の終わり
 
-	fetch_json(json_url).then(function(data){ //json_urlで読み出せるJSONデータ(data)の処理を行う
-		//console.log(data); //デバッグ用に取得したJSONデータをコンソールに表示
-		//ページ全体のタイトルなどの設定が必要であれば行う
-		const title = document.getElementsByTagName("title"); //titleタグを取得
-		const top_title = document.getElementById("top-title"); //ページの一番上の見出しの<div id="top-title">ところを取得
-		const top_abstract = document.getElementById("top-abstract"); //ページの一番上の見出しの<div id="top-abstract">ところを取得
+	fetch_json(json_url); //非同期処理を開始
+}
 
-		let num=0; //項目の数を数える
-		//JSONデータから繰り返し内容部分のHTMLを繰り返し生成
-		for(let i=0; i<data.introduction_obj_list.length; i++){
-			let elem = data.introduction_obj_list[i]; //JSONデータから１つの項目を取り出す
-			let item_html='';
-
-			//?q=検索語 を付けてelemの要素を検索する場合は，下記のif文を入れる（item_htmlの生成の文を囲む）
-			//if(q == 0 || (q != 0 && elem.title.indexOf(q) != -1)) { //?q=が無いときはq==0，?q=があるとき(q!=0)はelemの要素（title, abstract, detailなど）にマッチ
-			item_html += '<div class="col">';
-			item_html += '<div class="card">'; //Bootstrapのcardを使って繰り返し要素を出力する（ここでは1段のみ）
-			item_html += '<img class="card-img-top" src="photos/'+elem.image_file+'_thum.jpg" alt="'+elem.title+'の画像">'; //image_fileの値と対応する画像のファイル名に_thumを付けた.jpgファイルを用意する
-			item_html += '<div class="card-body">';
-			item_html += '<h5 class="card-title">'+elem.title+'</h5>';
-			item_html += '<p class="card-text">'+elem.abstract+'</p>';
-			item_html += '<a href="'+detail_html+'?id='+elem.id+'" class="card-link">詳細...</a>';
-			item_html += '</div>';
-			item_html += '</div>';
-			item_html += '</div>';
-			//} //if(elem.title.indexOf(q) != -1) {の終わり（先頭の//だけ消す）
-			//”item_htmlの生成の文”はここまで
-
-			list_container_row.innerHTML += item_html;//生成したHTMLを<div id="main_content">～</div>間に追加
-			num++;
-		}
-	});
