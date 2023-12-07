@@ -15,7 +15,7 @@ window.onload = function onLoad() {
 		}
 	};
 
-	const json_url = "https://infosysprojecta-2023.github.io/2023-project1-t.github.io//data.json";
+	const json_url = "https://infosysprojecta-2023.github.io/2023-project2-t.github.io//data.json";
 	// data.jsonでの動作が確認できたら，↑の行をコメント（//を先頭に付ける）して，↓の行のコメント//を外す
 	//const json_url = "https://infosysprojecta-2023/project1-2023-グループ記号/data.json";
 
