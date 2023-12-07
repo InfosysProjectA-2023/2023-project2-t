@@ -28,17 +28,6 @@ main {
 	box-shadow: 2px 2px 4px gray; /*影の幅 右 下　ぼかしの幅　影の色(カラーコードも可） */
 }
 
-.font-size0{
-	font-size: small;
-}
-
-.font-size1{
-	font-size: medium;
-}
-
-.font-size2{
-	font-size: large;
-}
 /* 地図の表示領域の設定 */
 #map_here{
 	float: left;
