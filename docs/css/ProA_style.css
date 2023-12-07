@@ -36,3 +36,7 @@ main {
 	height: 240px;
 }
 
+header{
+	position: fixed;
+	width:100%
+}
