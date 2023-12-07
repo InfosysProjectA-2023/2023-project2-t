@@ -5,7 +5,7 @@ main {
 
 /* ページの見出し領域の背景色，画像などを設定（id属性で設定） */
 /* 画像のファイルへのパスはこのCSSファイルのあるフォルダから見て，どこにあるかの相対パスとなる */
-#bg-head {
+.bg-head {
 	background: #deedff url(../photos/header_proa.jpg) repeat-x;
 }
 
