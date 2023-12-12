@@ -119,7 +119,6 @@ window.onload = function onLoad() {
 				 }
 
 				let star_ratings = document.getElementsByClassName("star-rating");
-
 				if(star_ratings.length > 0){//<div class="star-rating">のタグがあったら，scoreの値によって黄色い☆の表示幅を変更する
 					for(let i=0; i< star_ratings.length; i++){ //個別詳細のページでは1つだけだが，一覧ページでは複数もあり得る（要obj_idの値との一致をチェック）
 						let star_rating = star_ratings.item(i);
