@@ -26,7 +26,7 @@
   <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
       <div class="container-lg">
-        <a class="navbar-brand" href="./index.html">ProA 2023</a><!-- hrefのリンク先やテキストの部分は各チームで修正すること -->
+        <a class="navbar-brand" href="./rank.html">ProA 2023</a><!-- hrefのリンク先やテキストの部分は各チームで修正すること -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#Navbar" aria-controls="Navbar" aria-expanded="false" aria-label="ProA2022">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,7 +42,7 @@
               <a class="nav-link active">表示方法</a><!-- hrefのリンク先は各チームで修正すること -->
             </li>
             <li class="nav-item dropdown"><!-- カテゴリ別のメニュー項目を作る場合などに利用する．なお，hrefのリンク先は各チームで修正すること -->
-              <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">地域別</a>
+              <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">評価別</a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="./index.html">地域別</a></li>
                 <li><a class="dropdown-item" href="./genre.html">ジャンル別</a></li>
@@ -64,11 +64,17 @@
     <div class="p-3 p-sm-5 mb-4 bg-img bg-head">
       <div class="container">
         <h1 class="h1" id="top-title">家族で楽しめる公園まとめin関東</h1>
-        <p class="lead" id="top-abstract display-3"><strong>老若男女問わず楽しめる公園をまとめました！[関東編]</strong></p>
+        <p class="lead" id="top-abstract display-3"><strong>老若男女問わず楽しめる公園をまとめました！[関東編]</strong><br>※評価は目安であり根拠に基づいていません。</p>
       </div>
     </div>
     <div class="container">
-      <h3 class="pl-3">茨城県 ▷</h3>
+      <h3 class="pl-3">4.8 / 5.0
+        <div class="star-rating col-5 m-3 mb-5">
+          <!-- width: ○○%が☆5つに対する評価のパーセンテージ（例：4.5→90%） -->
+          <div class="star-rating-front" style="width: 96%">★★★★★</div>
+          <div class="star-rating-back">★★★★★</div>
+        </div>
+      </h3>
       <a class="btn btn-outline-primary btn-lg" href="./park.html?id=0" role="button">笠間芸術の森公園</a><!--test-->
       <a class="btn btn-outline-primary btn-lg" href="./park.html?id=1" role="button">ひたち海浜公園</a>
       <h3 class="pl-3"> </h3>
