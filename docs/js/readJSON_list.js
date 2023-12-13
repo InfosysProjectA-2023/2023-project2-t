@@ -11,7 +11,7 @@
 		}
 	};
 
-	const detail_html = "detail_example.html"; //個別詳細形式のページのHTMLファイル
+	const detail_html = "park.html"; //個別詳細形式のページのHTMLファイル
 
 	const json_url = "https://infosysprojecta-2023.github.io/2023-project2-t/data.json";
 	// data.jsonでの動作が確認できたら，↑の行をコメント（//を先頭に付ける）して，↓の行のコメント//を外す
