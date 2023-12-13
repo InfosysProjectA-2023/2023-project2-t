@@ -18,36 +18,37 @@
   <!-- ページ上部に常時表示される部分にBootstrapのNavbarというコンポーネント（部品）を表示 -->
   <!-- その他のメニューを使う場合は，https://bootstrap-guide.com/category/navbars 等を参照のこと-->
   <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
       <div class="container-lg">
-        <a class="navbar-brand" href="#">ProA 2023</a><!-- hrefのリンク先やテキストの部分は各チームで修正すること -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#Navbar" aria-controls="Navbar" aria-expanded="false" aria-label="ProA_2023">
+        <a class="navbar-brand" href="./index.html">ProA 2023</a><!-- hrefのリンク先やテキストの部分は各チームで修正すること -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#Navbar" aria-controls="Navbar" aria-expanded="false" aria-label="ProA2022">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="Navbar">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">フロントページ</a><!-- hrefのリンク先は各チームで修正すること -->
+              <a class="nav-link active" aria-current="page" href="#">Home<sw</a><!-- hrefのリンク先は各チームで修正すること -->
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./detail_example.html?id=1">パラメータidの番号で内容変更</a><!-- hrefのリンク先は各チームで修正すること -->
+              <a class="nav-link">                    </a><!-- hrefのリンク先は各チームで修正すること -->
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled">無効</a>
+              <a class="nav-link active">表示方法</a><!-- hrefのリンク先は各チームで修正すること -->
             </li>
             <li class="nav-item dropdown"><!-- カテゴリ別のメニュー項目を作る場合などに利用する．なお，hrefのリンク先は各チームで修正すること -->
-              <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">カテゴリ1</a>
+              <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">地域別</a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="./detail_example.html?id=1">カテゴリ内のページ1</a></li>
-                <li><a class="dropdown-item" href="./detail_example.html?id=2">カテゴリ内のページ2</a></li>
-                <li><a class="dropdown-item" href="./detail_example.html?id=3">カテゴリ内のページ3</a></li>
+                <li><a class="dropdown-item" href="./index.html">地域別</a></li>
+                <li><a class="dropdown-item" href="./genre.html">ジャンル別</a></li>
+                <li><a class="dropdown-item" href="./rank.html">評価別 <small>[new!]</small></a></li>
+                <li><a class="dropdown-item" href="./list_example.html">評価別 <small>[new!]</small></a></li>
                 <!-- 適宜，カテゴリ内のページがあれば，個々に項目を追加（あるいは，削除）-->
               </ul>
             </li>
           </ul>
           <form class="d-flex" role="search">
-            <input class="form-control me-2"  id="search_keyword" type="search" placeholder="検索..." aria-label="検索...">
-            <button class="btn btn-outline-success flex-shrink-0" id="search_btn" type="submit">検索</button>
+            <input class="form-control me-2" type="search" placeholder="検索..." aria-label="検索...">
+            <button class="btn btn-outline-success flex-shrink-0" type="submit">検索</button>
           </form>
         </div>
       </div>
